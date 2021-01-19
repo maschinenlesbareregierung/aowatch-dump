@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@malereg/aowatch-client": "^1.2.1"
+    "@malereg/aowatch-client": "1.2.13",
+    "commander": "^2.20.3"
   }
 }
