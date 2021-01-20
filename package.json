@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@malereg/aowatch-client": "1.2.13",
+    "@malereg/aowatch-client": "1.2.15",
+    "async": "^2.6.3",
+    "cli-progress": "^3.8.2",
     "commander": "^2.20.3"
   }
 }
