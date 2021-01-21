@@ -5,12 +5,14 @@ const loadCity = require('../src/load-city');
 const loadUrls = require('../src/load-urls');
 const loadCommittee = require('../src/load-committee');
 const loadCommitteeMembership = require('../src/load-committee-membership');
+const loadConstituency = require('../src/load-constituency');
 
 const storePoliticians = require('../src/store-politicians');
 const storeUrls = require('../src/store-urls');
 const storeCandidacyMandate = require('../src/store-candidacy-mandate');
 const storeCountry = require('../src/store-country');
 const storeCity = require('../src/store-city');
+const storeConstituency = require('../src/store-constituency');
 const storeCommittee = require('../src/store-committee');
 const storeCommitteeMembership = require('../src/store-committee-membership');
 
@@ -49,6 +51,8 @@ switch (program.opts().type) {
         .then(storeCountry)
         .then(loadCity)
         .then(storeCity)
+        .then(loadConstituency)
+        .then(storeConstituency)
     break;
     case 'committee':
       loadCommittee() 
