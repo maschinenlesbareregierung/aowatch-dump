@@ -22,4 +22,4 @@ module.exports =  async function loadPoliticians() {
         bar1.stop();
         return res;
     });
-}
+}   
