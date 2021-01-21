@@ -6,6 +6,8 @@ const loadUrls = require('../src/load-urls');
 const loadCommittee = require('../src/load-committee');
 const loadCommitteeMembership = require('../src/load-committee-membership');
 const loadConstituency = require('../src/load-constituency');
+const loadElectionProgram = require('../src/load-election-program');
+const loadElectoralList = require('../src/load-electoral-list');
 
 const storePoliticians = require('../src/store-politicians');
 const storeUrls = require('../src/store-urls');
@@ -15,7 +17,8 @@ const storeCity = require('../src/store-city');
 const storeConstituency = require('../src/store-constituency');
 const storeCommittee = require('../src/store-committee');
 const storeCommitteeMembership = require('../src/store-committee-membership');
-
+const storeElectionProgram = require('../src/store-election-program');
+const storeElectoralList = require('../src/store-electoral-list');
 
 const { Command } = require('commander');
 const path = require('path')
@@ -42,9 +45,13 @@ switch (program.opts().type) {
         .then(loadUrls)
         .then(storeUrls)
     break;
-    case 'candidacy-mandate':
+    case 'elections':
       loadCandidacyMandate()
         .then(storeCandidacyMandate)
+        .then(loadElectionProgram)
+        .then(storeElectionProgram)
+        .then(loadElectoralList)
+        .then(storeElectoralList)
     break;
     case 'locations':
       loadCountry()
