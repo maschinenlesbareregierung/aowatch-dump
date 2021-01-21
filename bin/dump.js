@@ -1,12 +1,18 @@
 const loadPoliticians = require('../src/load-politicians');
 const loadCandidacyMandate = require('../src/load-candidacy-mandate');
 const loadCountry = require('../src/load-country');
-
 const loadUrls = require('../src/load-urls');
+const loadCommittee = require('../src/load-committee');
+const loadCommitteeMembership = require('../src/load-committee-membership');
+
 const storePoliticians = require('../src/store-politicians');
 const storeUrls = require('../src/store-urls');
 const storeCandidacyMandate = require('../src/store-candidacy-mandate');
 const storeCountry = require('../src/store-country');
+const storeCommittee = require('../src/store-committee');
+const storeCommitteeMembership = require('../src/store-committee-membership');
+
+
 const { Command } = require('commander');
 const path = require('path')
 
@@ -40,6 +46,13 @@ switch (program.opts().type) {
       loadCountry()
         .then(storeCountry)
     break;
+    case 'committee':
+      loadCommittee() 
+        .then(storeCommittee)
+        .then(loadCommitteeMembership)
+        .then(storeCommitteeMembership)
+    break;
+
 }
 
 
