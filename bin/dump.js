@@ -1,11 +1,12 @@
 const loadPoliticians = require('../src/load-politicians');
 const loadCandidacyMandate = require('../src/load-candidacy-mandate');
+const loadCountry = require('../src/load-country');
 
 const loadUrls = require('../src/load-urls');
 const storePoliticians = require('../src/store-politicians');
 const storeUrls = require('../src/store-urls');
 const storeCandidacyMandate = require('../src/store-candidacy-mandate');
-
+const storeCountry = require('../src/store-country');
 const { Command } = require('commander');
 const path = require('path')
 
@@ -35,8 +36,10 @@ switch (program.opts().type) {
       loadCandidacyMandate()
         .then(storeCandidacyMandate)
     break;
-    
-
+    case 'country':
+      loadCountry()
+        .then(storeCountry)
+    break;
 }
 
 
