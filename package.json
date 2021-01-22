@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "@malereg/aowatch-dump": "bin/aowatch-dump",
-    "create-project": "bin/aowatch-dump"
+    "@malereg/aowatch-dump": "bin/aowatch-dump.js",
+    "create-project": "bin/aowatch-dump.js"
   },
   "publishConfig": {
     "access": "public"
