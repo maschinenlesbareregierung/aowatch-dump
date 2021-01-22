@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const loadPoliticians = require('../src/load-politicians');
 const loadCandidacyMandate = require('../src/load-candidacy-mandate');
 const loadCountry = require('../src/load-country');
