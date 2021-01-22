@@ -19,26 +19,7 @@ const loadTopic = require('../src/load-topic');
 const loadSidejob = require('../src/load-sidejob');
 const loadSidejobOrganization = require('../src/load-sidejob-organization');
 
-
-const storePoliticians = require('../src/store-politicians');
-const storeUrls = require('../src/store-urls');
-const storeCandidacyMandate = require('../src/store-candidacy-mandate');
-const storeCountry = require('../src/store-country');
-const storeCity = require('../src/store-city');
-const storeConstituency = require('../src/store-constituency');
-const storeCommittee = require('../src/store-committee');
-const storeCommitteeMembership = require('../src/store-committee-membership');
-const storeElectionProgram = require('../src/store-election-program');
-const storeElectoralList = require('../src/store-electoral-list');
-const storeParliament = require('../src/store-parliament');
-const storeFraction = require('../src/store-fraction');
-const storeParty = require('../src/store-party');
-const storePoll = require('../src/store-party');
-const storeVote = require('../src/store-vote');
-const storeTopic = require('../src/store-topic');
-const storeSidejob = require('../src/store-sidejob');
-const storeSidejobOrganization = require('../src/store-sidejob-organization');
-
+const fs = require('fs').promises;
 const { Command } = require('commander');
 const path = require('path')
 
@@ -48,7 +29,8 @@ var defaultPath = path.resolve(".");
 
 const program = new Command();
 program
-  .option('-t, --type <type>', 'which datatype to export (politician, election, location, committee, parliament, vote)', 'politician')
+  .description('Dumps data from Abgeordnetenwatch.de')
+  .option('-t, --type <type>', 'which datatype to export (politician, election, location, committee, parliament, vote)', 'location')
   .option('-p, --path <path>', 'path to export data to', defaultPath)
   .option('-c, --concurrency <concurrency>', 'how many parallel requests to use', 2);
   
@@ -56,56 +38,64 @@ program
 program.parse(process.argv);
 console.log(`type: ${program.opts().type}`);
 
+const store = (name, storePath) => {
+  return async (data) => {
+    var resolvedPath = path.resolve(storePath);
+    await fs.writeFile(resolvedPath + '/' + name + '.json', JSON.stringify(data));
+    return data;
+  }
+}
+
 
 switch (program.opts().type) {
     case 'politician':
     loadSidejob()
-      .then(storeSidejob)
+      .then(store('sidejob', program.opts().path))
       .then(loadSidejobOrganization)
-      .then(storeSidejobOrganization)
+      .then(store('sidejob-organization', program.opts().path))
       .then(loadPoliticians)
-      .then(storePoliticians)
+      .then(store('politician', program.opts().path))
       .then(loadUrls)
-      .then(storeUrls)
+      .then(store('politician-urls', program.opts().path))
     break;
     case 'election':
       loadCandidacyMandate()
-        .then(storeCandidacyMandate)
+        .then(store('candidacy-mandate', program.opts().path))
         .then(loadElectionProgram)
-        .then(storeElectionProgram)
+        .then(store('election-program', program.opts().path))
         .then(loadElectoralList)
-        .then(storeElectoralList)
+        .then(store('electoral-list', program.opts().path))
     break;
     case 'location':
       loadCountry()
-        .then(storeCountry)
+        .then(store('country', program.opts().path))
         .then(loadCity)
-        .then(storeCity)
+        .then(store('city', program.opts().path))
         .then(loadConstituency)
-        .then(storeConstituency)
+        .then(store('constituency', program.opts().path))
     break;
     case 'committee':
       loadCommittee() 
-        .then(storeCommittee)
+        .then(store('committee', program.opts().path))
         .then(loadCommitteeMembership)
-        .then(storeCommitteeMembership)
+        .then(store('committee-membership', program.opts().path))
     break;
     case 'parliament':
       loadParliament()
-        .then(storeParliament)
+        .then(store('parliament', program.opts().path))
         .then(loadParliamentPeriod)
+        .then(store('parliament-period', program.opts().path))
         .then(loadFraction)
-        .then(storeFraction)
+        .then(store('fraction', program.opts().path))
         .then(loadParty)
-        .then(storeParty)       
+        .then(store('party', program.opts().path))       
     break;
     case 'vote':
       loadPoll()
-        .then(storePoll)
+        .then(store('poll', program.opts().path))
         .then(loadTopic)
-        .then(storeTopic)
+        .then(store('topic', program.opts().path))
         .then(loadVote)
-        .then(storeVote)
-    break;
-    
+        .then(store('vote', program.opts().path))
+    break;   
 }
